@@ -6,7 +6,75 @@
         <link href="style.css" rel="stylesheet" type="text/css">
     </head>
     <body>
+        <div id="container">
+        </div>
+        <br>
+        <div id="buttonContainer">
+            <button type="button" class="restartButton" onclick = "restartButton()" >New/Restart</button>
+        </div>
     </body>
+
     <script>
+        let container = document.querySelector("#container");
+        let numSquares = 0
+        canvasCreation(numSquares);
+
+        function canvasCreation(numSquares) {
+            let canvas = document.createElement("div"),
+                canvasSize = 320; //Changes to canvas size must be made
+                                  // to match .canvas and .container in style.css
+
+            //Adds canvas to container. Made it easier to remove from and then add back
+            canvas.classList.add("canvas");
+            container.appendChild(canvas);
+  
+            for (i = 0; i < numSquares; i++) {
+                for (j = 0; j < numSquares; j++) {
+                    let square = document.createElement("div");
+                    square.classList.add("square");
+
+                    //Sets square size based on canvas size and number of squares.
+                    square.style.height = (canvasSize/numSquares).toString() + "px";
+                    square.style.width = (canvasSize/numSquares).toString() + "px";
+                        //console.log("I\'ve run " + (j + 1 + ((i) * numSquares)) + " times.");
+
+                    //Makes the first square of each line "clear: left"
+                    if (j == 0) {
+                        square.style.clear = "left";
+                    }
+                    canvas.appendChild(square);
+                }
+            }
+        
+            //Sets color to each square that is passed over
+            let hoverStart = document.querySelectorAll(".square");
+            hoverStart.forEach((square) => {
+                square.addEventListener("mouseenter", (e) => {
+                    e.target.style.background = createColor();
+                });
+            });
+        }
+        //Function to delete old and create new canvas with prompt for number of 'pixels' per line
+        function restartButton() {
+            //Deletes old canvas if it exists
+            let oldCanvas = document.querySelector(".canvas");
+            if (oldCanvas !== null) {
+                oldCanvas.remove();
+            }
+
+            //Gets new canvas size
+            let numSquares = prompt("How many squares per line?");
+
+            //Runs canvasCreation function
+            canvasCreation(numSquares);
+        }
+
+        //Random color hex generator
+        function createColor() {
+            return "#" + Math.floor(Math.random() * 16777215).toString(16);
+        }
+
+
     </script>
+
 </html>
